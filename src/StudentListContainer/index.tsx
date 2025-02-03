@@ -9,32 +9,34 @@ function StudentListContainer() {
 
     const [page, setPage] = useState(1);
 
-	const [current, setCurrent] = useState<number>(3);
-	const [total, setTotal] = useState<number>(100);
+	const [total, setTotal] = useState<number>(0);
 	const [limit, setLimit] = useState<number>(10);
 	const [panelNumber, setPanelNumber] = useState<number>(5);
-  
-	function handlePageChange(pageNumber: number) {
-	  setCurrent(pageNumber); 
-	}
+
   
 
 	useEffect(() => {
-		getStudents(page, 10).then((data) => setStudentList(data));
-	}, [page]);// whenever page updates, useEffect will run to get the new data
+
+		(async function(){
+			const resp = await getStudents(page, limit);
+			setStudentList(resp.users);
+			setTotal(resp.total);
+
+		})();
+	}, [page,limit]);// whenever page updates, useEffect will run to get the new data
 	return (
 		<>
 			<StudentList students={studentList} />
            
 		   	<Pager
-				current={current}
+				current={page}
 				total={total}
 				limit={limit}
 				panelNumber={panelNumber}
 		
 				onPageChange={
 					(pageNumber: number) => {
-						handlePageChange(pageNumber);
+						setPage(pageNumber);
 					}
 				}
 			/>
