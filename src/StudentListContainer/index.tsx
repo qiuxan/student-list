@@ -6,13 +6,18 @@ import { getStudents } from "../services/users";
 function StudentListContainer() {
 	const [studentList, setStudentList] = useState<StudentInterface[]>([]);
 
-	useEffect(() => {
-		getStudents(1, 10).then((data) => setStudentList(data));
-	}, []);// the empty array is to make sure that the effect is only run once because it has no dependencies
+    const [page, setPage] = useState(1);
 
+	useEffect(() => {
+		getStudents(page, 10).then((data) => setStudentList(data));
+	}, [page]);// whenever page updates, useEffect will run to get the new data
 	return (
 		<>
 			<StudentList students={studentList} />
+            <input type="number" value={page} onChange={(event)=>{
+                setPage(parseInt(event.target.value));
+                getStudents(page, 10).then((data) => setStudentList(data));
+            }} />
 		</>
 	);
 }
