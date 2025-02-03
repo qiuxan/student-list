@@ -8,7 +8,7 @@ function StudentListContainer() {
 
 	useEffect(() => {
 		getStudents(1, 10).then((data) => setStudentList(data));
-	}, []);
+	}, []);// the empty array is to make sure that the effect is only run once because it has no dependencies
 
 	return (
 		<>
