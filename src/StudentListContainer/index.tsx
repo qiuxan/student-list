@@ -40,6 +40,8 @@ function StudentListContainer() {
 					}
 				}
 			/>
+
+			Records per page: <input type="number" value={limit} onChange={e=>{ setLimit(parseInt(e.target.value))}}/> 
 		</>
 	);
 }
